@@ -85,18 +85,15 @@ def update_plot(attr, old, new):
     curdoc().add_root(layout)
 
 
-
-directory = "H:/MyDocuments/IIASA-Felix/DietChange_SocialMedia/"
-
-df_fb = pd.read_excel("H:/MyDocuments/IIASA-Felix/DietChange_SocialMedia/fractions.xlsx")
+df_fb = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/fractions.xlsx")
 df_fb.set_index('Unnamed: 0', inplace=True)
 
-df_gt = pd.read_excel(directory+'GoogleTrends/data/Global_byregion_topic_v2.xlsx')
+df_gt = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/Global_byregion_topic_v2.xlsx")
 df_gt.set_index('geoName', inplace=True)
 df_gt = df_gt[df_gt.index!='Taiwan']
 df_gt = df_gt / df_gt.max(axis=0)
 
-df_w = pd.read_excel(directory+'Wikipedia_vegetarians.xlsx', sheet_name='Sheet1')
+df_w = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/Wikipedia_vegetarians.xlsx", sheet_name='Sheet1')
 df_w = df_w[['Country', 'Updated figure', 'FLEXITARIAN', 'Data set year']]
 df_w['Country'] = df_w['Country'].str.strip()
 df_w = df_w.set_index('Country')
