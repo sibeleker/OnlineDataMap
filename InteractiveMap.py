@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[32]:
-
-
 import pandas as pd
 import numpy as np
 import math
@@ -20,58 +14,23 @@ from bokeh.io.doc import curdoc
 from bokeh.models import Slider, HoverTool, Select
 from bokeh.layouts import widgetbox, row, column
 
-
-# In[2]:
-
-
-directory = "H:/MyDocuments/IIASA-Felix/DietChange_SocialMedia/"
-
-
-# In[3]:
-
-
-# i need to get the FB data, GT data and the survey data
-
-df_fb = pd.read_excel("H:/MyDocuments/IIASA-Felix/DietChange_SocialMedia/fractions.xlsx")
+df_fb = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/fractions.xlsx")
 df_fb.set_index('Unnamed: 0', inplace=True)
-df_fb.head()
 
-
-# In[4]:
-
-
-
-df_gt = pd.read_excel(directory+'GoogleTrends/data/Global_byregion_topic_v2.xlsx')
+df_gt = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/Global_byregion_topic_v2.xlsx")
 df_gt.set_index('geoName', inplace=True)
 df_gt = df_gt[df_gt.index!='Taiwan']
 df_gt = df_gt / df_gt.max(axis=0)
 
-df_gt.tail()
-
-
-# In[5]:
-
-
-df_w = pd.read_excel(directory+'Wikipedia_vegetarians.xlsx', sheet_name='Sheet1')
+df_w = pd.read_excel("https://github.com/sibeleker/OnlineDataMap/blob/master/data/Wikipedia_vegetarians.xlsx", sheet_name='Sheet1')
 df_w = df_w[['Country', 'Updated figure', 'FLEXITARIAN', 'Data set year']]
 df_w['Country'] = df_w['Country'].str.strip()
 df_w = df_w.set_index('Country')
 df_w.columns = ['Vegetarian-Survey', 'Flexitarian-Survey', 'Dataset']
 df_w = df_w.dropna(how='all')
 
-df_w.head()
-
-
-# In[6]:
-
-
-# get the map
-
 world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
 world.loc[world.name == 'United States of America','name'] = 'United States'
-
-
-# In[7]:
 
 
 collist = {'FB_vegetarianism' : 'Jan-veg-mau', 
@@ -95,31 +54,8 @@ for index, row in world.iterrows():
             world.loc[index, key] = 'NA'
 
 
-# In[8]:
-
-
-world.head()
-
-
-# In[9]:
-
 
 world = world[world['name']!='Antarctica']
-
-
-# In[10]:
-
-
-world[world['name']=='Australia']
-
-
-# In[11]:
-
-
-world[world['Surveys']!='NA'].max()
-
-
-# In[12]:
 
 
 # Create a function the returns json_data for the year selected by the user
@@ -280,57 +216,3 @@ curdoc().add_root(layout)
 #output_file(directory+'map.html')
 #save(layout)
 
-
-# In[44]:
-
-
-
-
-# from bokeh.resources import CDN
-# from bokeh.embed import file_html
-
-# #plot = figure()
-# #plot.circle([1,2], [3,4])
-
-# html = file_html(column(select, p), CDN, "my plot")
-
-# with open(directory+"map.html", 'w') as f:
-#     f.write(html)
-
-
-# In[40]:
-
-
-# import bokeh
-# bokeh.__version__
-
-
-# The Local Bokeh Server
-# I developed the static map using 2018 data and Median Sales Price in Colab in order to get the majority of the code working prior to adding the interactive portions. In order to test and view the interactive components of Bokeh, we need to follow these steps.
-# 
-# Install the Bokeh server on your computer.
-# 
-# Download the .ipynb file to a local directory on your computer.
-# 
-# From the terminal change the directory to the directory with the .ipynb file.
-# 
-# From the terminal run the following command: bokeh serve (two dashes)show filename.ipynb
-# 
-# This should open a local host on your browser and output your interactive graph. If there is an error it should be visible in the terminal.
-
-# Public Access to the Interactive Graph via Heroku
-# Once you get the interactive graph working locally, you can let others access it by using a public Bokeh hosting service such as Heroku. Heroku will host the interactive graph allowing you to link to it or use an iframe (as in this article).
-# 
-# The basic steps to host on Heroku are:
-# 
-# Change the Colab notebook to comment out the install of fiona and geopandas. Heroku has these items and the build will fail if they are in the code.
-# 
-# Change the Colab notebook to comment out the last two lines (output_notebook() and show(p)).
-# 
-# Download the Colab notebook as a .py file and upload it to a GitHub repository.
-# 
-# Create a Heroku app and connect to your GitHub repository containing your .py file.
-# 
-# Create a Procfile and requirements.txt file. See mine in my GitHub.
-# 
-# Run the app!
